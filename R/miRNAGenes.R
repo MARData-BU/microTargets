@@ -1,3 +1,22 @@
+##' Get microRNA-target Interactions
+##'
+##' Retrieve predicted and validated miRNA-target interactions using Multimir,
+##' miRNAtap and SpideRmiR R packages
+##' @param DE.miRNA Character string or character vector of miRNA(s)
+##' @param DE.target Character string or character vector of mRNA(s)
+##' @details Requires several packages: multiMiR, miRNAtap, miRNAtap.db and 
+##' SpidermiR. Not recomended to use this function as the database versions 
+##' used in these packages are not up to date
+##' @return Returns a list of miRNAs, each containing a vector with all 
+##' identified targets in DE.target
+##' @author Julia Perera Bel <jperera@imim.es>
+##' @export
+##' @import biomaRt
+##' @import multiMiR
+##' @import miRNAtap
+##' @import miRNAtap.db
+##' @import SpidermiR
+##' @import openxlsx
 miRNAGenes<-function(DE.miRNA,DE.target){
   require(openxlsx)
   require(multiMiR)

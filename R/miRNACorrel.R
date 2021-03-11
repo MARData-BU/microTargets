@@ -1,3 +1,26 @@
+##' Get microRNA-target Interactions and compute correlations
+##'
+##' Main function to retrieve interactions between a set of miRNAs and a 
+##' set of genes and computes correlations given expression data. The function 
+##' calls miRNAGenes.updated function which uses TargetScan, miRDB and mirTarBase.
+##' @param DE.miRNA Character string or character vector of miRNA(s)
+##' @param DE.target Character string or character vector of mRNA(s)
+##' @param counts.miRNA Table of miRNA counts. First column contains miRNA ID's (miRBase v21)
+##' @param counts.mRNA Table of mRNA counts with sample columns in teh same 
+##' order as counts.miRNA. First column contains Symbol IDs
+##' @param cols.s Vector with colors corresponding to the conditions of each sample
+##' @param resultsDir Output directory (default working dir)
+##' @param name Name of the output files (default "Summary")
+##' @param path Character string with the path to where the database files are stored
+##' @return The function returns a dataframe with all miRNAs and the number of 
+##' targets identified and the number of targets significantly negatively 
+##' correlated for  each miRNA. It also generates: a) excel file with one sheet 
+##' per miRNA, in which the correlations results for each target are shown 
+##' (Rho and p.value of the spearman correlation); b) pdf with correlation plots 
+##' for each miRNA-target pair
+##' @author Julia Perera Bel <jperera@imim.es>
+##' @export
+##' @import openxlsx
 miRNACorrel<-function(DE.miRNA,DE.target, counts.miRNA, counts.mRNA,cols.s=NULL,resultsDir=getwd(),name="Summary"){
   require(openxlsx)
 

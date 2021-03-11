@@ -1,3 +1,19 @@
+##' Get microRNA-target Interactions
+##'
+##' Retrieve predicted and validated miRNA-target interactions using TargetScan,
+##'  miRDB and mirTarBase
+##' @param DE.miRNA Character string or character vector of miRNA(s)
+##' @param DE.target Character string or character vector of mRNA(s)
+##' @param path Character string with the path to where the database files are stored
+##' @return Returns a list with four elements: 1) list of  miRNAs each conataining 
+##' a vector with all identified targets in DE.target; 2) dataframe with results from 
+##' miRDB, 3) mirTarBase and4) TargetScan
+##' @author Julia Perera Bel <jperera@imim.es>
+##' @export
+##' @import biomaRt
+##' @import miRBaseConverter
+##' @import gplots
+
 miRNAGenes.updated<-function(DE.miRNA,DE.target,path="/bicoh/MARGenomics/annotationData/miRNAIntegration/"){
   require(biomaRt)
   require(miRBaseConverter)
