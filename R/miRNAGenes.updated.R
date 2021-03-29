@@ -14,14 +14,19 @@
 ##' @import miRBaseConverter
 ##' @import gplots
 
-miRNAGenes.updated<-function(DE.miRNA,DE.target,path="/bicoh/MARGenomics/annotationData/miRNAIntegration/"){
+miRNAGenes.updated<-function(DE.miRNA,DE.target=NULL,path="/bicoh/MARGenomics/annotationData/miRNAIntegration/"){
   require(biomaRt)
   require(miRBaseConverter)
   require(gplots)
   ensembl=useMart("ensembl",dataset="hsapiens_gene_ensembl")
+  # if DE.target not provided, retrieve all genes
+  if (is.null(DE.target)){
+  DE.target<-getBM(attributes=c("hgnc_symbol"),
+                     mart=ensembl)[,"hgnc_symbol"] #39147
+  }
   # TargetScan: v7.2 2018 Predicted.  Based on miRBase 21
   # miRDB: v6 (2019) Predicted. Based on miRBase 22 !!! library(miRBaseConverter)
-  # mirTarBase: v7 (2017) Validated. Based on miRBase 21
+  # mirTarBase: v8 (2019) Validated. Based on miRBase 22
   
   #DE.miRNA: character string or character vector for the mature miRNA(s)
   #DE.tarfget: character string or character vector for the target gene(s
@@ -29,14 +34,14 @@ miRNAGenes.updated<-function(DE.miRNA,DE.target,path="/bicoh/MARGenomics/annotat
   DE.target=as.character(DE.target)
   # load DBs
   cat("Loading targetsacan...\n")
-  targetscan_default=read.delim(file.path(path,"Predicted_Targets_Context_Scores.default_predictions_HomoSapiens.txt"),header = T)
+  targetscan_default=read.delim(file.path(path,"Predicted_Targets_Context_Scores.default_predictions_v7.2_HomoSapiens.txt"),header = T)
   cat("Loading miRDB...\n")
   miRDB=read.delim(file.path(path,"miRDB_v6.0_prediction_result_HomoSapiens.txt"),header = F)
   cat("Loading mirtarbase...\n")
-  mirtarbase=read.delim(file.path(path,"miRTarBase_MTI_HomoSapiens.txt"),header = T)
+  mirtarbase=read.delim(file.path(path,"miRTarBase_hsa_MTI_v8.txt"),header = T)
   
   #######
-  # miRDB
+  # miRDB (predicted)
   #######
   
   # Convert IDs
@@ -50,7 +55,7 @@ miRNAGenes.updated<-function(DE.miRNA,DE.target,path="/bicoh/MARGenomics/annotat
   match1=match1[!(duplicated(match1[,1:2])),]
   
   #######
-  # mirtarbase
+  # mirtarbase (validated)
   #######
   # Match with DB
   match2=mirtarbase[mirtarbase$miRNA %in% DE.miRNA,]
@@ -65,9 +70,10 @@ miRNAGenes.updated<-function(DE.miRNA,DE.target,path="/bicoh/MARGenomics/annotat
   match3=targetscan_default[targetscan_default$miRNA %in% DE.miRNA,]
   match3=match3[match3$Gene.Symbol %in% DE.target,]
 
-  venn(list("miRDB"=match1$V2,"miRtarBase"=match2$Target.Gene,"TargetScan"=match3$Gene.Symbol))
-  gens.sel=unique(c(match1$V2,match2$Target.Gene,match3$Gene.ID))
-  
+  v=venn(list("miRDB"=unique(match1$V2),
+                  "miRtarBase"=unique(match2$Target.Gene),
+                  "TargetScan"=unique(match3$Gene.Symbol)))
+  plot(v)
   
   ##################
   #organize by miRNA
@@ -82,6 +88,6 @@ miRNAGenes.updated<-function(DE.miRNA,DE.target,path="/bicoh/MARGenomics/annotat
                             as.character(match3$Gene.Symbol[match3$miRNA==i])))
     
   }
-  return(list(gens.sel,match1,match2,match3))
+  return(list("miRNA-targets"=gens.sel,"miRDB"=match1,"miRTarBase"=match2,"TargetScan"=match3))
   
 }
