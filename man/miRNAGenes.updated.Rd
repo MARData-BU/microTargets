@@ -6,7 +6,7 @@
 \usage{
 miRNAGenes.updated(
   DE.miRNA,
-  DE.target,
+  DE.target = NULL,
   path = "/bicoh/MARGenomics/annotationData/miRNAIntegration/"
 )
 }

@@ -38,7 +38,7 @@ miRNAGenes.updated<-function(DE.miRNA,DE.target=NULL,path="/bicoh/MARGenomics/an
   cat("Loading miRDB...\n")
   miRDB=read.delim(file.path(path,"miRDB_v6.0_prediction_result_HomoSapiens.txt"),header = F)
   cat("Loading mirtarbase...\n")
-  mirtarbase=read.delim(file.path(path,"miRTarBase_hsa_MTI_v8.txt"),header = T)
+  mirtarbase=read.delim(file.path(path,"miRTarBase_hsa_MTI_v8.txt"),header = T,quote = "",sep = "\t")
   
   #######
   # miRDB (predicted)
