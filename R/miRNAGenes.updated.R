@@ -21,12 +21,12 @@ miRNAGenes.updated<-function(DE.miRNA,DE.target=NULL,path="/bicoh/MARGenomics/an
   ensembl=useMart("ensembl",dataset="hsapiens_gene_ensembl")
   # if DE.target not provided, retrieve all genes
   if (is.null(DE.target)){
-  DE.target<-getBM(attributes=c("hgnc_symbol"),
-                     mart=ensembl)[,"hgnc_symbol"] #39147
+    DE.target<-getBM(attributes=c("hgnc_symbol"),
+                     mart=ensembl)[,"hgnc_symbol"] #40796
   }
   # TargetScan: v7.2 2018 Predicted.  Based on miRBase 21
   # miRDB: v6 (2019) Predicted. Based on miRBase 22 !!! library(miRBaseConverter)
-  # mirTarBase: v8 (2019) Validated. Based on miRBase 22
+  # mirTarBase: v9 (2022) Validated. Based on miRBase 22
   
   #DE.miRNA: character string or character vector for the mature miRNA(s)
   #DE.tarfget: character string or character vector for the target gene(s
@@ -38,7 +38,7 @@ miRNAGenes.updated<-function(DE.miRNA,DE.target=NULL,path="/bicoh/MARGenomics/an
   cat("Loading miRDB...\n")
   miRDB=read.delim(file.path(path,"miRDB_v6.0_prediction_result_HomoSapiens.txt"),header = F)
   cat("Loading mirtarbase...\n")
-  mirtarbase=read.delim(file.path(path,"miRTarBase_hsa_MTI_v8.txt"),header = T,quote = "",sep = "\t")
+  mirtarbase=read.delim(file.path(path,"miRTarBase_hsa_MTI_v9.txt"),header = T,quote = "",sep = "\t")
   
   #######
   # miRDB (predicted)
