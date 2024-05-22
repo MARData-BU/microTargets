@@ -14,15 +14,23 @@
 ##' @import miRBaseConverter
 ##' @import gplots
 
-miRNAGenes.updated<-function(DE.miRNA,DE.target=NULL,path="/bicoh/MARGenomics/annotationData/miRNAIntegration/"){
+miRNAGenes.updated<-function (DE.miRNA, DE.target = NULL, path = "/bicoh/MARGenomics/annotationData/miRNAIntegration/"){
   require(biomaRt)
   require(miRBaseConverter)
   require(gplots)
-  ensembl=useMart("ensembl",dataset="hsapiens_gene_ensembl")
-  # if DE.target not provided, retrieve all genes
-  if (is.null(DE.target)){
-    DE.target<-getBM(attributes=c("hgnc_symbol"),
-                     mart=ensembl)[,"hgnc_symbol"] #40796
+  
+  # Try to connect to the main Ensembl site
+  ensembl <- tryCatch(
+    useMart("ensembl", dataset = "hsapiens_gene_ensembl"),
+    error = function(e) {
+      # If an error occurs, try to connect to the US East mirror site
+      message("Failed to connect to the main Ensembl site, trying the US East mirror site...")
+      useMart("ensembl", dataset = "hsapiens_gene_ensembl", host = "useast.ensembl.org")
+    }
+  )
+  
+  if (is.null(DE.target)) {
+    DE.target <- getBM(attributes = c("hgnc_symbol"), mart = ensembl)[, "hgnc_symbol"]
   }
   # TargetScan: v7.2 2018 Predicted.  Based on miRBase 21
   # miRDB: v6 (2019) Predicted. Based on miRBase 22 !!! library(miRBaseConverter)
