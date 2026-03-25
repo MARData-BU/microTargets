@@ -1,12 +1,11 @@
 Package: microTargets
 Title: Retrieve microRNA-target Interactions and Compute Correlations
-Version: 0.1.0
+Version: 0.2.0
 Author: Julia Perera Bel
 Maintainer: Julia Perera Bel <jperera@imim.es>
-Description: Retrieve interactions between a set of miRNAs and a set of genes and computes correlations given expression data. The package uses TargetScan v7.2, miRDB v6 and mirTarBase v9.
+Description: Retrieve interactions between a set of miRNAs and a set of genes and computes correlations given expression data. The package uses TargetScan v8.0, miRDB v6 and mirTarBase v10.
 License: MIT + file LICENSE
 Imports:
-    biomaRt,
     openxlsx,
     miRBaseConverter,
     gplots
